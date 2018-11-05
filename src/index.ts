@@ -14,7 +14,7 @@ const logLevels = {
 
 interface IConfig {
   server: any;
-  context: () => { [key: string]: any };
+  context: (params: any) => { [key: string]: any };
   typeDefinitions: string;
   config: { [key: string]: any };
   headersToForward?: string[];
@@ -40,7 +40,6 @@ export default async function createGateway({
     },
   });
 
-  // TODO: ADD PROPER CONTEXT OBJECT
   const graphQLServer = new ApolloServer({
     typeDefs: gql(typeDefinitions),
     resolvers: instrumentedResolvers,
