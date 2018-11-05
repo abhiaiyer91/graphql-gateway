@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "es2017", "esnext.asynciterable"]
-  }
+    "lib": ["dom", "es2017", "esnext.asynciterable"],
+    "declaration": true,
+    "outDir": "lib",
+    "skipLibCheck": true
+  },
+  "include": ["src/*"],
+  "exclude": ["node_modules", "lib"]
 }

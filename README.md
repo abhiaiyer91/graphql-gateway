@@ -1,14 +1,13 @@
-# Roxy - GraphQL Gateway
+# GraphQL Gateway
 
 ## Background
 
 One of the many reasons engineers love GraphQL is it's ability to query multiple data sources in one request. As engineering teams
 move away from the traditional "REST" architecture, opportunities for new `GraphQL Native` applications become possible. As you start
 building out a distributed system with GraphQL the need for a short develop to deploy cycle becomes crucial. In a microservice architecture
-with GraphQL, each service owns a GraphQL schema, a slice of the overall system's APIs. The `Roxy` service uses the concept of [schema-delegation](https://www.prisma.io/blog/graphql-schema-stitching-explained-schema-delegation-4c6caf468405/) to combine multiple GraphQL schemas from different GraphQL servers to create a GraphQL Gateway.
+with GraphQL, each service owns a GraphQL schema, a slice of the overall system's APIs. The `graphql-gateway` service uses the concept of [schema-delegation](https://www.prisma.io/blog/graphql-schema-stitching-explained-schema-delegation-4c6caf468405/) to combine multiple GraphQL schemas from different GraphQL servers to create a GraphQL Gateway.
 
 GraphQL Gateways expose a single entry point to query your entire system.
-
 
 
 ![GraphQLGateway](https://cdn-images-1.medium.com/max/1600/1*bIs4BAGs1hqpWuT_TAgO6A.png)
@@ -74,8 +73,8 @@ You can open the GraphQL playground at http://localhost:3020/graphql
 
 ## Schema Delegation
 
-When the Roxy service receives an incoming HTTP request it `parses` the request body for a GraphQL query. During the `execution` phase it `delegates` or `forwards` the GraphQL Query document to the GraphQL service that owns it. 
+When the Gateway receives an incoming HTTP request it `parses` the request body for a GraphQL query. During the `execution` phase it `delegates` or `forwards` the GraphQL Query document to the GraphQL service that owns it. 
 
 [`GraphQL Bindings`](https://github.com/graphql-binding/graphql-binding) are modular building blocks that allow you to embed existing GraphQL APIs into a GraphQL server. This makes it extremely easy to access data from various GraphQL sources and integrate them into a single GraphQL API. 
 
-The Roxy service uses GraphQL Bindings to create access points to every service in your config.
+The Gateway uses GraphQL Bindings to create access points to every service in your config.
