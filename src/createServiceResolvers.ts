@@ -1,9 +1,13 @@
-import { get, reduce, isEmpty } from 'lodash';
+import { get, isEmpty, reduce } from 'lodash';
+
+interface IFields {
+  [key: string]: any;
+}
 
 /**
  * Turn a GraphQL Binding into a resolver function for a GraphQL Server
  */
-function createResolver(fields, query) {
+function createResolver(fields: IFields, query: any) {
   return reduce(
     fields,
     (memo, currentVal) => {
@@ -22,7 +26,7 @@ function createResolver(fields, query) {
  * Take a configuration of GraphQL bindings and create a Root resolver object
  * We can then use this to create a GraphQL server
  */
-export default function createServiceResolvers(config) {
+export default function createServiceResolvers(config: { [key: string]: any }) {
   // Get Query Fields
   const serviceQueries = reduce(
     config,

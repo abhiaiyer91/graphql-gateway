@@ -1,26 +1,34 @@
-import { instrumentResolvers } from "@workpop/graphql-metrics";
-import { ApolloServer, gql } from "apollo-server-express";
-import { pick } from "lodash";
-import { getLogger } from "log4js";
+import { instrumentResolvers } from '@workpop/graphql-metrics';
+import { ApolloServer, gql } from 'apollo-server-express';
+import { pick } from 'lodash';
+import { getLogger } from 'log4js';
 
-import createServiceResolvers from "./createServiceResolvers";
+import createServiceResolvers from './createServiceResolvers';
 
 const logLevels = {
-  INFO: "info",
-  ERROR: "error",
-  WARNING: "warning",
-  TRACE: "trace"
+  INFO: 'info',
+  ERROR: 'error',
+  WARNING: 'warning',
+  TRACE: 'trace',
 };
+
+interface IConfig {
+  server: any;
+  context: () => { [key: string]: any };
+  typeDefinitions: string;
+  config: { [key: string]: any };
+  headersToForward?: string[];
+}
 
 export default async function createGateway({
   config,
   server,
   typeDefinitions,
   context,
-  headersToForward
-}) {
-  const logger = getLogger("graphql:gateway");
-  logger.level = "debug";
+  headersToForward,
+}: IConfig) {
+  const logger = getLogger('graphql:gateway');
+  logger.level = 'debug';
 
   const resolvers = createServiceResolvers(config);
 
@@ -29,7 +37,7 @@ export default async function createGateway({
     logLevels,
     logFunc: (logLevel, ...args) => {
       return logger[logLevel](...args);
-    }
+    },
   });
 
   // TODO: ADD PROPER CONTEXT OBJECT
@@ -37,18 +45,17 @@ export default async function createGateway({
     typeDefs: gql(typeDefinitions),
     resolvers: instrumentedResolvers,
     context: ({ req, ...rest }) => {
-      const forwardHeaders =
-        headersToForward && pick(req.headers, ...headersToForward);
+      const forwardHeaders = headersToForward && pick(req.headers, ...headersToForward);
 
       const createdContext = context({ req, ...rest }) || {};
 
       return {
         ...createdContext,
         headers: {
-          ...forwardHeaders
-        }
+          ...forwardHeaders,
+        },
       };
-    }
+    },
   });
 
   graphQLServer.applyMiddleware({ app: server });
