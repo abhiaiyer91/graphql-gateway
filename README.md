@@ -16,7 +16,7 @@ GraphQL Gateways expose a single entry point to query your entire system.
 ## Getting Started
 
 ```bash
-yarn add graphql-gateway
+yarn add graphql-binding-gateway
 ```
 
 ## Setup
@@ -47,7 +47,7 @@ type ServiceConfig {
 
 ```ts
 import express from "express";
-import createGateway from "graphql-gateway";
+import createGateway from "graphql-binding-gateway";
 import typeDefinitions from "./typeDefinitions";
 
 const config = {

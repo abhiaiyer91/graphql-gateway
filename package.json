@@ -1,7 +1,7 @@
 {
-  "name": "graphql-gateway",
+  "name": "graphql-binding-gateway",
   "version": "0.0.1",
-  "description": "Utility for creating a GraphQL Gateway",
+  "description": "Utility for creating a GraphQL Gateway with GraphQL Bindings",
   "main": "lib/index.js",
   "author": "Abhi Aiyer",
   "license": "MIT",
