@@ -1,6 +1,5 @@
 import { instrumentResolvers } from '@workpop/graphql-metrics';
 import { ApolloServer, gql } from 'apollo-server-express';
-import { pick } from 'lodash';
 import { getLogger } from 'log4js';
 
 import createServiceResolvers from './createServiceResolvers';
@@ -17,16 +16,9 @@ interface IConfig {
   context: (params: any) => { [key: string]: any };
   typeDefinitions: string;
   config: { [key: string]: any };
-  headersToForward?: string[];
 }
 
-export default async function createGateway({
-  config,
-  server,
-  typeDefinitions,
-  context,
-  headersToForward,
-}: IConfig) {
+export default async function createGateway({ config, server, typeDefinitions, context }: IConfig) {
   const logger = getLogger('graphql:gateway');
   logger.level = 'debug';
 
@@ -43,18 +35,7 @@ export default async function createGateway({
   const graphQLServer = new ApolloServer({
     typeDefs: gql(typeDefinitions),
     resolvers: instrumentedResolvers,
-    context: ({ req, ...rest }) => {
-      const forwardHeaders = headersToForward && pick(req.headers, ...headersToForward);
-
-      const createdContext = context({ req, ...rest }) || {};
-
-      return {
-        ...createdContext,
-        headers: {
-          ...forwardHeaders,
-        },
-      };
-    },
+    context,
   });
 
   graphQLServer.applyMiddleware({ app: server });
